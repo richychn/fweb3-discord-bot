@@ -16,19 +16,43 @@ const provider = new Web3.providers.WebsocketProvider(process.env.NODE_URL);
 const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
+const options = {
+    fromBlock: 0
+}
+
 client.on('messageCreate', async msg => {
     switch (msg.content) {
-        case "!connect":
-            msg.channel.send("You are now subscribed to verification requests.");
-
-            const options = {
-                fromBlock: 0
-            }
+        case "!connect-seek-verify":
+            msg.channel.send("You are now subscribed to notifications of verification requests.");
 
             contract.events.PlayerSeeksVerification(options)
                 .on('data', event => {
                     console.log(event);
                     msg.channel.send("Player is seeking verification.\nfweb.xyz/?wallet=" + event['returnValues']['_player']);
+                })
+                .on('changed', changed => console.log(changed))
+                .on('error', err => console.log(err))
+                .on('connected', str => console.log(str))
+            break;
+        case "!connect-verified":
+            msg.channel.send("You are now subscribed to notifications of successful verifications.");
+
+            contract.events.PlayerVerifiedToWin(options)
+                .on('data', event => {
+                    console.log(event);
+                    msg.channel.send("Player " + event['returnValues']['_player'] + " has been verified by " + event['returnValues']['_judge']);
+                })
+                .on('changed', changed => console.log(changed))
+                .on('error', err => console.log(err))
+                .on('connected', str => console.log(str))
+            break;
+        case "!connect-winners":
+            msg.channel.send("You are now subscribed to notifications of new winners.");
+
+            contract.events.PlayerWon(options)
+                .on('data', event => {
+                    console.log(event);
+                    msg.channel.send("Player " + event['returnValues']['_player'] + " has won!!!");
                 })
                 .on('changed', changed => console.log(changed))
                 .on('error', err => console.log(err))
