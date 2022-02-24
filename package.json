@@ -1,0 +1,21 @@
+{
+  "name": "fweb3-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "richychn",
+  "license": "ISC",
+  "dependencies": {
+    "@alch/alchemy-web3": "^1.2.4",
+    "axios": "^0.26.0",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "ethers": "^5.5.4"
+  },
+  "devDependencies": {
+    "web3": "^1.7.0"
+  }
+}
