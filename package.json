@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node index.js"
+    "build": "webpack",
+    "start": "node index.js"
   },
   "author": "richychn",
   "license": "ISC",
