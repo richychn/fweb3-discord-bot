@@ -16,6 +16,12 @@ const provider = new Web3.providers.WebsocketProvider(process.env.NODE_URL);
 const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
+// nonsense function to keep dyno alive
+async function getMeme(){
+    const res = await axios.get('https://memeapi.pythonanywhere.com/');
+    return res.data.memes[0].url;
+}
+
 const options = {
     fromBlock: 25330221
 }
@@ -37,8 +43,7 @@ client.on('messageCreate', async msg => {
                 .on('connected', str => console.log(str))
 
             interval = setInterval (function () {
-                msg.channel.send(interval);
-                console.log(interval);
+                getMeme()
             }, 30000);
             break;
         case "!connect-verified":
