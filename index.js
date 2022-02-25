@@ -28,7 +28,7 @@ client.on('messageCreate', async msg => {
             contract.events.PlayerSeeksVerification(options)
                 .on('data', event => {
                     console.log(event);
-                    msg.channel.send("Player is seeking verification.\nfweb.xyz/?wallet=" + event['returnValues']['_player']);
+                    msg.channel.send("Player is seeking verification: https://fweb3.xyz/?wallet=" + event['returnValues']['_player']);
                 })
                 .on('changed', changed => console.log(changed))
                 .on('error', err => console.log(err))
