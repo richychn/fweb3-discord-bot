@@ -20,6 +20,8 @@ const options = {
     fromBlock: 25310520
 }
 
+let interval;
+
 client.on('messageCreate', async msg => {
     switch (msg.content) {
         case "!connect-seek-verify":
@@ -33,6 +35,10 @@ client.on('messageCreate', async msg => {
                 .on('changed', changed => console.log(changed))
                 .on('error', err => console.log(err))
                 .on('connected', str => console.log(str))
+
+            interval = setInterval (function () {
+                console.log(interval);
+            }, 600000);
             break;
         case "!connect-verified":
             msg.channel.send("You are now subscribed to notifications of successful verifications.");
@@ -58,6 +64,8 @@ client.on('messageCreate', async msg => {
                 .on('error', err => console.log(err))
                 .on('connected', str => console.log(str))
             break;
+        case "!stop":
+            clearInterval(interval);
     }
 })
 
