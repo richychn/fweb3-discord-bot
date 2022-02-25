@@ -17,7 +17,7 @@ const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
 const options = {
-    fromBlock: 25308400
+    fromBlock: 25309715
 }
 
 client.on('messageCreate', async msg => {
