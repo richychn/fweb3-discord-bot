@@ -17,7 +17,7 @@ const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
 const options = {
-    fromBlock: 25330092
+    fromBlock: 25330221
 }
 
 let interval;
@@ -38,7 +38,7 @@ client.on('messageCreate', async msg => {
 
             interval = setInterval (function () {
                 console.log(interval);
-            }, 60000);
+            }, 30000);
             break;
         case "!connect-verified":
             msg.channel.send("You are now subscribed to notifications of successful verifications.");
