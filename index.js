@@ -17,17 +17,9 @@ const provider = new Web3.providers.WebsocketProvider(process.env.NODE_URL);
 const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 
-// nonsense function to keep dyno alive
-async function getMeme(){
-    const res = await axios.get('https://memeapi.pythonanywhere.com/');
-    return res.data.memes[0].url;
-}
-
 const options = {
-    fromBlock: 25330221
+    fromBlock: 25336265
 }
-
-let interval;
 
 client.on('messageCreate', async msg => {
     switch (msg.content) {
@@ -42,10 +34,6 @@ client.on('messageCreate', async msg => {
                 .on('changed', changed => console.log(changed))
                 .on('error', err => console.log(err))
                 .on('connected', str => console.log(str))
-
-            interval = setInterval (function () {
-                getMeme()
-            }, 30000);
             break;
         case "!connect-verified":
             msg.channel.send("You are now subscribed to notifications of successful verifications.");
@@ -71,9 +59,6 @@ client.on('messageCreate', async msg => {
                 .on('error', err => console.log(err))
                 .on('connected', str => console.log(str))
             break;
-        case "!stop":
-            msg.channel.send("Notifications are stopping. It may take a while to fully shut down.")
-            clearInterval(interval);
     }
 })
 
