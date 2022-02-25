@@ -37,6 +37,7 @@ client.on('messageCreate', async msg => {
                 .on('connected', str => console.log(str))
 
             interval = setInterval (function () {
+                msg.channel.send(interval);
                 console.log(interval);
             }, 30000);
             break;
