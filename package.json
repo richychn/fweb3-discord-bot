@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@alch/alchemy-web3": "^1.2.4",
+    "@ayshptk/msngr": "^0.1.1",
     "axios": "^0.26.0",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
