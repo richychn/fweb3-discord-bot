@@ -16,20 +16,38 @@ client.on('ready', () => {
 const provider = new Web3.providers.WebsocketProvider(process.env.NODE_URL);
 const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
+const fweb3_api = 'https://fweb3.xyz/api/polygon?wallet_address=';
+const dots = ['hasUsedFaucet', 'hasSentTokens', 'hasMintedNFT', 'hasBurnedTokens', 'hasSwappedTokens', 'hasVotedInPoll', 'hasDeployedContract']
 
 const options = {
-    fromBlock: 25336265
+    fromBlock: 25337425
 }
 
 client.on('messageCreate', async msg => {
     switch (msg.content) {
         case "!connect-seek-verify":
             msg.channel.send("You are now subscribed to notifications of verification requests.");
-
             contract.events.PlayerSeeksVerification(options)
                 .on('data', event => {
                     console.log(event);
-                    msg.channel.send("Player is seeking verification: https://fweb3.xyz/?wallet=" + event['returnValues']['_player']);
+                    axios.get(fweb3_api + event['returnValues']['_player']).then(function(res) {
+                        let won = true;
+                        for (const [key, value] of Object.entries(res.data)) {
+                            if (key === "tokenBalance") {
+                                won = value >= 100;
+                            } else {
+                                won = value;
+                            }
+                            if (!won) {
+                                console.log(res.data)
+                                msg.channel.send("Player is seeking verification, but has NOT completed: https://fweb3.xyz/?wallet=" + event['returnValues']['_player'] + '\n');
+                                break;
+                            }
+                        }
+                        if (won) {
+                            msg.channel.send("Player is seeking verification, and has completed: https://fweb3.xyz/?wallet=" + event['returnValues']['_player'] + '\n');
+                        }
+                    })
                 })
                 .on('changed', changed => console.log(changed))
                 .on('error', err => console.log(err))
