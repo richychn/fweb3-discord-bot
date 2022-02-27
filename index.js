@@ -20,7 +20,7 @@ contract.events.PlayerSeeksVerification().on('data', async event => {
         for (const [key, value] of Object.entries(res.data)) {
             if (key === "tokenBalance") {
                 won = value >= 100;
-            } else {
+            } else if (key !== 'hasWonGame' && key !== 'trophyColor') {
                 won = value;
             }
             if (!won) {
