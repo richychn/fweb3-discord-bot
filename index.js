@@ -12,15 +12,14 @@ const web3 = new Web3(provider);
 const contract = new web3.eth.Contract(abi, contractAddress);
 const fweb3_api = 'https://fweb3.xyz/api/polygon?wallet_address=';
 const webhook = process.env.WEBHOOK_URL;
+const dots = ['hasEnoughTokens', 'hasUsedFaucet', 'hasSentTokens', 'hasMintedNFT', 'hasBurnedTokens', 'hasSwappedTokens', 'hasVotedInPoll', 'hasDeployedContract']
 
 contract.events.PlayerSeeksVerification().on('data', async event => {
     console.log(event);
     axios.get(fweb3_api + event['returnValues']['_player']).then(async function(res) {
         let won = true;
         for (const [key, value] of Object.entries(res.data)) {
-            if (key === "tokenBalance") {
-                won = value >= 100;
-            } else if (key !== 'hasWonGame' && key !== 'trophyColor') {
+            if (dots.includes(key)) {
                 won = value;
             }
             if (!won) {
